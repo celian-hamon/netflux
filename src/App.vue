@@ -3,12 +3,8 @@
         <ShowModal
             v-if="showModal"
             @close="showModal = false"
-            v-bind:title="this.modal.title"
-            v-bind:img="this.modal.img"
-            v-bind:text="this.modal.text"
-            v-bind:duration="this.modal.duration"
-            v-bind:type="this.modal.type"
-            v-bind:date="this.modal.date"
+            :type="this.modal.types"
+            :movie="this.modal.movie"
         />
 
         <!-- display movie started -->
@@ -77,20 +73,10 @@ export default {
     data: function () {
         return {
             modal: {
-                title: "",
-                text: "",
-                img: "",
-                duration: "",
                 types: "",
-                date: "",
+                movie: {},
             },
 
-            modalTitle: "",
-            modalText: "",
-            modalImage: "",
-            modalDuration: "",
-            modalTypes: "",
-            modalDate: "",
             showModal: false,
 
             seen: [],
@@ -110,25 +96,19 @@ export default {
             );
             let data = await response.json();
 
-            this.modal.title = data.title;
-            this.modal.text = data.overview;
-            this.modal.img = `https://image.tmdb.org/t/p/original${data.poster_path}`;
-            this.modal.duration = data.runtime;
-            this.modal.date = data.release_date;
+            this.modal.movie = data;
 
             this.modal.types = "";
             for (let i = 0; i < data.genres.length; i++) {
                 this.modal.types += data.genres[i].name + " ";
             }
 
-            console.log(this.modalDuration);
-
             this.showModal = true;
         },
         async load() {
             //retreive last seen movies
             //last seen ids
-            let last_seen = [89, 550, 258509];
+            let last_seen = [469, 550, 258509];
             //for each id get the movie
             for (let i = 0; i < last_seen.length; i++) {
                 let response = await fetch(
@@ -138,7 +118,7 @@ export default {
                 if (i == 0) {
                     document.getElementById(
                         "seen"
-                    ).style.background = `linear-gradient(0deg, rgb(0, 0, 0,0.70) 10%, rgba(0, 0, 0, 0) 50%),url(https://image.tmdb.org/t/p/original${data.backdrop_path})`;
+                    ).style.background = `linear-gradient(0deg, rgb(0, 0, 0,0.95) 0%, rgba(0, 0, 0, 0) 50%),url(https://image.tmdb.org/t/p/original${data.backdrop_path})`;
                 }
                 this.seen.push({
                     img: `https://image.tmdb.org/t/p/original${data.poster_path}`,

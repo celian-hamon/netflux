@@ -1,25 +1,37 @@
 <template>
-    <div class="modal">
-        <div class="movie_card" id="bright">
-            <div class="info_section">
-                <div class="movie_header">
-                    <img class="locandina" :src="img" />
-                    <h1>{{ title }}</h1>
-                    <h4>{{ date }}</h4>
-                    <span class="minutes">{{ duration }}minutes</span>
-                    <p class="type">{{ type }}</p>
-                </div>
-                <div class="movie_desc">
-                    <p class="text">
-                        {{ text }}
-                    </p>
-                </div>
+    <div
+        class="modal"
+        id="modal"
+        :style="{
+            background: `linear-gradient(0deg, rgb(0, 0, 0,0.70) 10%, rgba(0, 0, 0, 0) 50%),url(https://image.tmdb.org/t/p/original${this.movie.backdrop_path})`,
+            'background-size': 'cover',
+            'background-position': 'center',
+        }"
+    >
                 <button
-                    style="float: right; margin: 0 5% 10% 0"
                     @click="$emit('close')"
                 >
-                    close
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0V0z" fill="none" opacity=".87"/><path d="M17.51 3.87L15.73 2.1 5.84 12l9.9 9.9 1.77-1.77L9.38 12l8.13-8.13z"/></svg>
                 </button>
+        <div class="movie_card" id="bright">
+            <div class="movie_header">
+                <img
+                    class="locandina"
+                    :src="
+                        'https://image.tmdb.org/t/p/original' +
+                        movie.poster_path
+                    "
+                />
+            </div>
+            <div class="movie_desc">
+                <h1>{{ movie.title }}</h1>
+                <h4>{{ movie.release_date }}</h4>
+                <span class="minutes">{{ movie.runtime }}minutes</span>
+                <p class="type">{{ this.type }}</p>
+                <p class="text">
+                    {{ movie.overview }}
+                </p>
+
             </div>
         </div>
     </div>
@@ -28,48 +40,57 @@
 <script>
 export default {
     props: {
-        title: {
-            type: String,
-            default: "",
-            required: true,
-        },
-        img: {
-            type: String,
-            default: "",
-            required: true,
-        },
-        text: {
-            type: String,
-            default: "",
-            required: true,
-        },
-        duration: {
-            type: Number,
-            default: "",
-            required: true,
-        },
         type: {
             type: String,
             default: "",
             required: true,
         },
-        date: {
-            type: String,
-            default: "",
+        movie: {
+            type: Object,
             required: true,
+            default: {},
+        },
+    },
+    computed: {
+        cssProps() {
+            return {
+                "--back":
+                    "https://image.tmdb.org/t/p/original" +
+                    this.movie.backdrop_path,
+            };
         },
     },
 };
 </script>
 
 <style lang="scss">
+button{
+    background: rgb(45, 45, 45);
+    border: none;
+
+top:0;
+    left: 0;
+    border-radius: 50px;
+    z-index: 100;
+    margin:15px;
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    svg{
+        width: 25px;
+        transform: translateX(-2px);
+        height: 25px;
+        fill: rgb(180, 180, 180);
+    }
+}
+
 .modal {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-end;
 
     position: fixed; /* Stay in place */
-    z-index: 30000000000; /* Sit on top */
+    z-index: 3; /* Sit on top */
 
     left: 0;
     top: 0;
@@ -77,81 +98,41 @@ export default {
     height: 100%; /* Full height */
 
     animation: spawn 0.3s;
-    background: rgba(0, 0, 0, 0.353);
 }
-
-.link {
-    display: block;
-    text-align: center;
-    color: #777;
-    text-decoration: none;
-    padding: 10px;
+.movie_header{
+    img{
+        border-radius: 10px; ;
+    }
 }
 
 .movie_card {
-    position: relative;
-    display: block;
-    background: rgba(0, 0, 0, 0.5);
-    width: 50vw;
-    height: 50%;
-    margin: 80px auto;
-    overflow: hidden;
-    border-radius: 10px;
-    transition: all 0.4s;
-    box-shadow: 0px 0px 120px -25px rgba(0, 0, 0, 0.5);
-    &:hover {
-        transform: scale(1.02);
-        box-shadow: 0px 0px 80px -25px rgba(0, 0, 0, 0.5);
-        transition: all 0.4s;
+    display: flex;
+    padding: 30px;
+    width: 100vw;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+img.locandina {
+    width: 100%;
+    height: 400px;
+}
+.movie_desc {
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    width: 400px;
+    color: white;
+    h1 {
+        font-size: 5rem;
+        margin: 0;
     }
-    .info_section {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        background-blend-mode: multiply;
-        z-index: 2;
-        border-radius: 10px;
-        .movie_header {
-            position: relative;
-            padding: 25px 25px 0 25px;
-            height: 45%;
-            h1 {
-                font-size: 4rem;
-                font-weight: bold;
-                color: rgb(255, 255, 255);
-            }
-            h4 {
-                font-size: 2rem;
-                color: rgb(209, 209, 209);
-            }
-            .minutes {
-                display: inline-block;
-                margin-top: 15px;
-                font-size: 2rem;
-                color: rgb(209, 209, 209);
-            }
-            .type {
-                font-size: 2rem;
-                display: inline-block;
-                margin-left: 10px;
-                color: rgb(209, 209, 209);
-            }
-            .locandina {
-                position: relative;
-                float: left;
-                margin-right: 20px;
-                height: 120px;
-                box-shadow: 0 0 20px -10px rgba(0, 0, 0, 0.5);
-            }
-        }
-        .movie_desc {
-            padding: 0 25px 25px 25px;
-            height: 50%;
-            .text {
-                font-size: 2.7rem;
-                color: #f7f7f7;
-            }
-        }
+    h4 {
+        font-size: 2rem;
+    }
+    p {
+        font-size: 1.5rem;
     }
 }
 
