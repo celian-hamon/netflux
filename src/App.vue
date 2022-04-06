@@ -3,12 +3,12 @@
         <ShowModal
             v-if="showModal"
             @close="showModal = false"
-            v-bind:title="this.modalTitle"
-            v-bind:img="this.modalImage"
-            v-bind:text="this.modalText"
-            v-bind:duration="this.modalDuration"
-            v-bind:type="this.modalTypes"
-            v-bind:date="this.modalDate"
+            v-bind:title="this.modal.title"
+            v-bind:img="this.modal.img"
+            v-bind:text="this.modal.text"
+            v-bind:duration="this.modal.duration"
+            v-bind:type="this.modal.type"
+            v-bind:date="this.modal.date"
         />
 
         <!-- display movie started -->
@@ -16,8 +16,9 @@
             <div class="row">
                 <NFTCard
                     v-for="item in seen"
-                    v-bind:img="item.img"
-                    v-bind:name="item.name"
+                    v-bind:key="item"
+                    :img="item.img"
+                    :name="item.name"
                     v-on:click="addToSeen(item.id)"
                 />
             </div>
@@ -29,8 +30,9 @@
             <div class="row">
                 <NFTCard
                     v-for="item in items_popular"
-                    v-bind:img="item.img"
-                    v-bind:name="item.name"
+                    v-bind:key="item"
+                    :img="item.img"
+                    :name="item.name"
                     v-on:click="addToSeen(item.id)"
                 />
             </div>
@@ -42,8 +44,9 @@
             <div class="row">
                 <NFTCard
                     v-for="item in now"
-                    v-bind:img="item.img"
-                    v-bind:name="item.name"
+                    v-bind:key="item"
+                    :img="item.img"
+                    :name="item.name"
                     v-on:click="addToSeen(item.id)"
                 />
             </div>
@@ -55,8 +58,9 @@
             <div class="row">
                 <NFTCard
                     v-for="item in similar"
-                    v-bind:img="item.img"
-                    v-bind:name="item.name"
+                    v-bind:key="item"
+                    :img="item.img"
+                    :name="item.name"
                     v-on:click="addToSeen(item.id)"
                 />
             </div>
@@ -72,6 +76,15 @@ export default {
     name: "App",
     data: function () {
         return {
+            modal: {
+                title: "",
+                text: "",
+                img: "",
+                duration: "",
+                types: "",
+                date: "",
+            },
+
             modalTitle: "",
             modalText: "",
             modalImage: "",
@@ -97,15 +110,15 @@ export default {
             );
             let data = await response.json();
 
-            this.modalTitle = data.title;
-            this.modalText = data.overview;
-            this.modalImage = `https://image.tmdb.org/t/p/original${data.poster_path}`;
-            this.modalDuration = data.runtime;
-            this.modalDate = data.release_date;
+            this.modal.title = data.title;
+            this.modal.text = data.overview;
+            this.modal.img = `https://image.tmdb.org/t/p/original${data.poster_path}`;
+            this.modal.duration = data.runtime;
+            this.modal.date = data.release_date;
 
-            this.modalTypes = "";
+            this.modal.types = "";
             for (let i = 0; i < data.genres.length; i++) {
-                this.modalTypes += data.genres[i].name + " ";
+                this.modal.types += data.genres[i].name + " ";
             }
 
             console.log(this.modalDuration);
