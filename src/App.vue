@@ -108,7 +108,7 @@ export default {
         async load() {
             //retreive last seen movies
             //last seen ids
-            let last_seen = [469, 550, 258509];
+            let last_seen = [460465, 550, 258509];
             //for each id get the movie
             for (let i = 0; i < last_seen.length; i++) {
                 let response = await fetch(

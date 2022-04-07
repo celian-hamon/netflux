@@ -3,7 +3,7 @@
         class="modal"
         id="modal"
         :style="{
-            background: `linear-gradient(0deg, rgb(0, 0, 0,0.70) 10%, rgba(0, 0, 0, 0) 50%),url(https://image.tmdb.org/t/p/original${this.movie.backdrop_path})`,
+            background: `linear-gradient(0deg, rgb(0, 0, 0,0.95) 0%, rgba(0, 0, 0, 0) 70%),url(https://image.tmdb.org/t/p/original${this.movie.backdrop_path})`,
             'background-size': 'cover',
             'background-position': 'center',
         }"
@@ -26,8 +26,7 @@
             <div class="movie_desc">
                 <h1>{{ movie.title }}</h1>
                 <h4>{{ movie.release_date }}</h4>
-                <span class="minutes">{{ movie.runtime }}minutes</span>
-                <p class="type">{{ this.type }}</p>
+                <span class="minutes">{{ movie.runtime }}minutes || {{ this.type }}</span>
                 <p class="text">
                     {{ movie.overview }}
                 </p>
@@ -130,6 +129,10 @@ img.locandina {
     }
     h4 {
         font-size: 2rem;
+    }
+    span.minutes{
+        font-size: 1.5rem;
+        color: rgba(255, 255, 255, 0.825);
     }
     p {
         font-size: 1.5rem;
