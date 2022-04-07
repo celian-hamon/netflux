@@ -119,6 +119,12 @@ export default {
                     document.getElementById(
                         "seen"
                     ).style.background = `linear-gradient(0deg, rgb(0, 0, 0,0.95) 0%, rgba(0, 0, 0, 0) 50%),url(https://image.tmdb.org/t/p/original${data.backdrop_path})`;
+                                        document.getElementById(
+                        "seen"
+                    ).style.backgroundPosition = "center";
+                                        document.getElementById(
+                        "seen"
+                    ).style.backgroundSize = "cover";
                 }
                 this.seen.push({
                     img: `https://image.tmdb.org/t/p/original${data.poster_path}`,
