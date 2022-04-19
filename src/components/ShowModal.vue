@@ -113,7 +113,6 @@ top:0;
 }
 
 img.locandina {
-    width: 100%;
     height: 400px;
 }
 .movie_desc {
